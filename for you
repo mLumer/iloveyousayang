@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>for you ♡</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #fffaf8;
+      color: #473b3a;
+      font-family: "DM Sans", sans-serif;
+      overflow-x: hidden;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    /* =========================
+       FLOATING HEARTS
+    ========================= */
+
+    .heart {
+      position: fixed;
+      bottom: -30px;
+      color: #e7a7ad;
+      font-size: 15px;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+      opacity: .6;
+      z-index: 20;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: .6;
+      }
+
+      to {
+        transform: translateY(-110vh) rotate(25deg);
+        opacity: 0;
+      }
+    }
+
+    /* =========================
+       PIN SCREEN
+    ========================= */
+
+    #lockScreen {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      background:
+        radial-gradient(circle at 20% 20%, #ffe8eb 0, transparent 28%),
+        radial-gradient(circle at 80% 80%, #f9e4dc 0, transparent 30%),
+        #fffaf8;
+    }
+
+    .lock-card {
+      width: min(420px, 100%);
+      text-align: center;
+      padding: 45px 28px;
+      border-radius: 32px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(220,170,175,.25);
+      box-shadow: 0 25px 80px rgba(130, 87, 88, .12);
+      backdrop-filter: blur(15px);
+    }
+
+    .tiny {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ad8588;
+      margin-bottom: 15px;
+    }
+
+    .lock-card h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 42px;
+      font-weight: 400;
+      margin-bottom: 10px;
+      color: #4c3b3c;
+    }
+
+    .lock-card p {
+      color: #967e80;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .pin-display {
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      gap: 13px;
+      margin-bottom: 25px;
+    }
+
+    .pin-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid #d49da3;
+      transition: .2s;
+    }
+
+    .pin-dot.active {
+      background: #d49da3;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 65px);
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .key {
+      width: 65px;
+      height: 55px;
+      border: 0;
+      border-radius: 18px;
+      background: #fff;
+      color: #604b4c;
+      font-size: 17px;
+      cursor: pointer;
+      box-shadow: 0 5px 18px rgba(130,87,88,.08);
+      transition: .15s;
+    }
+
+    .key:hover {
+      transform: translateY(-2px);
+      background: #fff0f1;
+    }
+
+    .key:active {
+      transform: scale(.94);
+    }
+
+    .key.delete {
+      font-size: 15px;
+      color: #a78386;
+    }
+
+    .error {
+      height: 20px;
+      margin-top: 18px;
+      color: #c77980;
+      font-size: 12px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    #main {
+      display: none;
+    }
+
+    .hero {
+      min-height: 100vh;
+      padding: 90px 25px 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      background:
+        radial-gradient(circle at 10% 20%, #ffe8eb, transparent 28%),
+        radial-gradient(circle at 90% 70%, #f8e5dd, transparent 30%),
+        #fffaf8;
+    }
+
+    .hero-content {
+      max-width: 720px;
+    }
+
+    .hero .tiny {
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(48px, 10vw, 88px);
+      line-height: 1;
+      font-weight: 400;
+      color: #493b3b;
+      margin-bottom: 25px;
+    }
+
+    .hero h1 span {
+      font-style: italic;
+      color: #c88e95;
+    }
+
+    .hero p {
+      max-width: 470px;
+      margin: auto;
+      color: #927b7d;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .scroll {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #a98e91;
+      letter-spacing: 2px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      50% {
+        transform: translate(-50%, 8px);
+      }
+    }
+
+    section {
+      padding: 100px 22px;
+      max-width: 1050px;
+      margin: auto;
+    }
+
+    .section-label {
+      text-align: center;
+      color: #bd8d92;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(35px, 6vw, 55px);
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: #947d7e;
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 550px;
+      margin: 0 auto 50px;
+    }
+
+    /* =========================
+       COUNTDOWN
+    ========================= */
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 700px;
+      margin: auto;
+      gap: 15px;
+    }
+
+    .time-box {
+      padding: 25px 10px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 12px 35px rgba(120,80,80,.07);
+    }
+
+    .time-box strong {
+      display: block;
+      font-family: "Playfair Display", serif;
+      font-size: 38px;
+      font-weight: 400;
+      color: #654f50;
+    }
+
+    .time-box span {
+      font-size: 11px;
+      color: #aa9294;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* =========================
+       MEMORIES
+    ========================= */
+
+    .memories {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .memory {
+      position: relative;
+      height: 360px;
+      border-radius: 25px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #eadbd7;
+    }
+
+    .memory img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: .6s;
+    }
+
+    .memory:hover img {
+      transform: scale(1.05);
+    }
+
+    .memory-overlay {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 25px;
+      color: white;
+      background: linear-gradient(transparent, rgba(45,30,30,.75));
+    }
+
+    .memory-overlay h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 23px;
+      font-weight: 400;
+    }
+
+    .memory-overlay p {
+      font-size: 12px;
+      opacity: .85;
+      margin-top: 5px;
+    }
+
+    /* =========================
+       LOVE REASONS
+    ========================= */
+
+    .reasons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .reason {
+      padding: 28px 22px;
+      border-radius: 25px;
+      background: #fff;
+      box-shadow: 0 12px 35px rgba(120,80,80,.06);
+      transition: .3s;
+    }
+
+    .reason:hover {
+      transform: translateY(-5px);
+    }
+
+    .reason-number {
+      color: #d09ca2;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+
+    .reason h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 23px;
+      font-weight: 400;
+      margin-bottom: 9px;
+    }
+
+    .reason p {
+      color: #907b7c;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    /* =========================
+       LOVE SLIDER
+    ========================= */
+
+    .love-box {
+      max-width: 700px;
+      margin: auto;
+      padding: 45px 25px;
+      border-radius: 30px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 15px 45px rgba(120,80,80,.07);
+    }
+
+    .love-number {
+      font-family: "Playfair Display", serif;
+      font-size: 65px;
+      color: #bd8d92;
+      margin-bottom: 10px;
+    }
+
+    .love-number span {
+      font-size: 30px;
+    }
+
+    .love-box input[type="range"] {
+      width: 100%;
+      accent-color: #d49da3;
+      cursor: pointer;
+    }
+
+    .slider-note {
+      color: #9c8587;
+      font-size: 12px;
+      margin-top: 18px;
+    }
+
+    /* =========================
+       SOUNDTRACK
+    ========================= */
+
+    /* =========================
+       LETTER
+    ========================= */
+
+    .letter-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    .letter {
+      width: min(650px, 100%);
+      background: #fff;
+      padding: 45px 35px;
+      border-radius: 25px;
+      box-shadow: 0 15px 50px rgba(120,80,80,.08);
+      cursor: pointer;
+      transition: .4s;
+      position: relative;
+    }
+
+    .letter:hover {
+      transform: translateY(-5px) rotate(.3deg);
+    }
+
+    .letter-front {
+      text-align: center;
+    }
+
+    .letter-front .envelope {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .letter-front h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .letter-front p {
+      color: #9a8586;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .letter-content {
+      display: none;
+      line-height: 1.9;
+      color: #735f60;
+      font-size: 14px;
+    }
+
+    .letter.open .letter-front {
+      display: none;
+    }
+
+    .letter.open .letter-content {
+      display: block;
+      animation: fadeIn .5s;
+    }
+
+    .letter-content h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+
+    .letter-content p {
+      margin-bottom: 17px;
+    }
+
+    .signature {
+      font-family: "Playfair Display", serif;
+      font-style: italic;
+      font-size: 22px;
+      margin-top: 25px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 20px 80px;
+      color: #a58d8f;
+      font-size: 12px;
+    }
+
+    footer span {
+      color: #cc949b;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      section {
+        padding: 75px 18px;
+      }
+
+      .countdown {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .memories {
+        grid-template-columns: 1fr;
+      }
+
+      .memory {
+        height: 400px;
+      }
+
+      .reasons {
+        grid-template-columns: 1fr;
+      }
+
+      .song {
+        padding: 15px;
+      }
+
+      .hero h1 {
+        font-size: 58px;
+      }
+
+      .letter {
+        padding: 35px 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       PIN SCREEN
+  ========================= -->
+
+  <div id="lockScreen">
+
+    <div class="lock-card">
+
+      <div class="tiny">♡ a little private page</div>
+
+      <h1>just for us.</h1>
+
+      <p>
+        type in those four special numbers<br>
+        that started everything for us.
+      </p>
+
+      <div class="pin-display">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <div class="keypad">
+
+        <button class="key" onclick="pressKey('1')">1</button>
+        <button class="key" onclick="pressKey('2')">2</button>
+        <button class="key" onclick="pressKey('3')">3</button>
+
+        <button class="key" onclick="pressKey('4')">4</button>
+        <button class="key" onclick="pressKey('5')">5</button>
+        <button class="key" onclick="pressKey('6')">6</button>
+
+        <button class="key" onclick="pressKey('7')">7</button>
+        <button class="key" onclick="pressKey('8')">8</button>
+        <button class="key" onclick="pressKey('9')">9</button>
+
+        <div></div>
+        <button class="key" onclick="pressKey('0')">0</button>
+        <button class="key delete" onclick="deleteKey()">⌫</button>
+
+      </div>
+
+      <div class="error" id="error"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MAIN WEBSITE
+  ========================= -->
+
+  <main id="main">
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+      <div class="hero-content">
+
+        <div class="tiny">for my favorite person ♡</div>
+
+        <h1>
+          our little<br>
+          <span>world.</span>
+        </h1>
+
+        <p>
+          a tiny corner of the internet made just for us,
+          filled with little memories, little reasons,
+          and everything I love about having you in my life.
+        </p>
+
+      </div>
+
+      <div class="scroll">
+        take a little look ↓
+      </div>
+
+    </div>
+
+
+    <!-- TIMELINE -->
+
+    <section>
+
+      <div class="section-label">our little timeline</div>
+
+      <h2 class="section-title">
+        time with you.
+      </h2>
+
+      <p class="section-subtitle">
+        every second counts when it is spent with someone special.
+      </p>
+
+      <div class="countdown">
+
+        <div class="time-box">
+          <strong id="days">0</strong>
+          <span>days</span>
+        </div>
+
+        <div class="time-box">
+          <strong id="hours">0</strong>
+          <span>hours</span>
+        </div>
+
+        <div class="time-box">
+          <strong id="minutes">0</strong>
+          <span>minutes</span>
+        </div>
+
+        <div class="time-box">
+          <strong id="seconds">0</strong>
+          <span>seconds</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- MEMORIES -->
+
+    <section>
+
+      <div class="section-label">little memories</div>
+
+      <h2 class="section-title">
+        pieces of us.
+      </h2>
+
+      <p class="section-subtitle">
+        some photos, some words. tap each one and remember
+        the little moment behind it.
+      </p>
+
+      <div class="memories">
+
+        <div class="memory">
+          <img src="foto1.jfif">
+          <div class="memory-overlay">
+            <h3>the beginning</h3>
+            <p>where our little story started.</p>
+          </div>
+        </div>
+
+        <div class="memory">
+          <img src="foto2.jfif">
+          <div class="memory-overlay">
+            <h3>little moments</h3>
+            <p>the ordinary days that became special.</p>
+          </div>
+        </div>
+
+        <div class="memory">
+          <img src="foto3.jfif">
+          <div class="memory-overlay">
+            <h3>my favorite person</h3>
+            <p>somehow, you make everything softer.</p>
+          </div>
+        </div>
+
+        <div class="memory">
+          <img src="foto4.jfif">
+          <div class="memory-overlay">
+            <h3>more to come</h3>
+            <p>this story is nowhere near finished.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- REASONS -->
+
+    <section>
+
+      <div class="section-label">things i love</div>
+
+      <h2 class="section-title">
+        little reasons.
+      </h2>
+
+      <p class="section-subtitle">
+        not just the big things. sometimes the smallest things
+        are the ones I remember the most.
+      </p>
+
+      <div class="reasons">
+
+        <div class="reason">
+          <div class="reason-number">01</div>
+          <h3>your little ways</h3>
+          <p>
+            The small things you do without even realizing
+            how much they mean to me.
+          </p>
+        </div>
+
+        <div class="reason">
+          <div class="reason-number">02</div>
+          <h3>your patience</h3>
+          <p>
+            The way you stay and listen, even when I am
+            being difficult sometimes.
+          </p>
+        </div>
+
+        <div class="reason">
+          <div class="reason-number">03</div>
+          <h3>your presence</h3>
+          <p>
+            Somehow, just knowing you are there makes
+            ordinary days feel a little better.
+          </p>
+        </div>
+
+        <div class="reason">
+          <div class="reason-number">04</div>
+          <h3>your smile</h3>
+          <p>
+            One tiny smile from you can completely change
+            the mood of my day.
+          </p>
+        </div>
+
+        <div class="reason">
+          <div class="reason-number">05</div>
+          <h3>the way you care</h3>
+          <p>
+            You make me feel cared for in ways I sometimes
+            don't know how to explain.
+          </p>
+        </div>
+
+        <div class="reason">
+          <div class="reason-number">06</div>
+          <h3>just you</h3>
+          <p>
+            Maybe the simplest reason of all. I just really
+            love having you in my life.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- LOVE SLIDER -->
+
+    <section>
+
+      <div class="section-label">be honest</div>
+
+      <h2 class="section-title">
+        how much do i love you?
+      </h2>
+
+      <p class="section-subtitle">
+        slide over. although, I don't think the number
+        could ever really explain it.
+      </p>
+
+      <div class="love-box">
+        <div class="love-number">
+  
+        <span id="loveValue">0</span>%
+
+        </div>
+        <input type="range" id="loveSlider" min="0" max="100" value="0">
+
+        <p id="loveMessage">okay, i really really like you</p>
+
+        <div class="slider-note">
+          geser pelan-pelan, aa sayang 
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SOUNDTRACK -->
+
+
+    <!-- LOVE LETTER -->
+
+    <section>
+
+      <div class="section-label">one last thing</div>
+
+      <h2 class="section-title">
+        there's a letter for you.
+      </h2>
+
+      <p class="section-subtitle">
+        maybe save this part for when you need a little reminder.
+      </p>
+
+      <div class="letter-wrapper">
+
+        <div
+          class="letter"
+          id="letter"
+          onclick="openLetter()"
+        >
+
+          <div class="letter-front">
+
+            <div class="envelope">♡</div>
+
+            <h3>for you.</h3>
+
+            <p>tap to open</p>
+
+          </div>
+
+          <div class="letter-content">
+
+            <h3>dear Galang</h3>
+
+            <p>
+            i don't think i'll ever find the perfect words to explain how much you
+            mean to me, but i still want to try. somehow having you in my life has
+            made so many ordinary days feel a little more special. it's not always
+            about the big things. sometimes it's the smallest things you do, the
+            way you talk to me, the way you make sure i'm okay, and all those little
+            moments that stay in my mind longer than you probably realize.
+            </p>
+
+            <p>
+             we've been through so many little things together, and i'm grateful for 
+             every part of it. even the moments that weren't perfect somehow became 
+             part of our story. thank you for choosing me, for staying, for loving me 
+             in your own way, and for making me feel like i have someone i can always
+             come back to.
+            </p>
+
+            <p>
+              i hope we get to make so many more memories together, laugh about random
+              things, annoy each other a little, and keep finding new reasons to fall 
+              for each other. whatever comes next, i just want you to know that having
+              you here means more to me than i can put into words.
+            </p>
+
+            <p>
+              no matter how ordinary a day feels,
+              somehow you always become my favorite part of it.
+            </p>
+
+            <div class="signature">
+              i love you always, aa ♡
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <footer>
+      made with <span>♡</span> for my favorite person.
+    </footer>
+
+  </main>
+
+
+  <script>
+
+    /* =========================
+       CHANGE YOUR PIN HERE
+    ========================= */
+
+    const correctPIN = "0708";
+
+    let enteredPIN = "";
+
+    const dots = document.querySelectorAll(".pin-dot");
+    const error = document.getElementById("error");
+
+    function pressKey(number) {
+
+      if (enteredPIN.length >= 4) return;
+
+      enteredPIN += number;
+
+      updateDots();
+
+      if (enteredPIN.length === 4) {
+
+        setTimeout(() => {
+
+          if (enteredPIN === correctPIN) {
+
+            document.getElementById("lockScreen").style.display = "none";
+            document.getElementById("main").style.display = "block";
+
+            createHearts();
+
+          } else {
+
+            error.textContent = "hmm... that's not the number ♡";
+
+            enteredPIN = "";
+
+            setTimeout(() => {
+              error.textContent = "";
+              updateDots();
+            }, 900);
+
+          }
+
+        }, 250);
+
+      }
+
+    }
+
+
+    function deleteKey() {
+
+      enteredPIN = enteredPIN.slice(0, -1);
+
+      error.textContent = "";
+
+      updateDots();
+
+    }
+
+
+    function updateDots() {
+
+      dots.forEach((dot, index) => {
+
+        if (index < enteredPIN.length) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+
+      });
+
+    }
+
+
+    /* =========================
+       COUNTDOWN
+       CHANGE THIS DATE
+    ========================= */
+
+    const startDate = new Date("2026-05-06T00:00:00");
+
+    function updateCountdown() {
+
+      const now = new Date();
+
+      const difference = now - startDate;
+
+      if (difference < 0) return;
+
+      const seconds = Math.floor(difference / 1000);
+
+      const days = Math.floor(seconds / 86400);
+      const hours = Math.floor((seconds % 86400) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = secs;
+
+    }
+
+    updateCountdown();
+
+    setInterval(updateCountdown, 1000);
+
+
+    /* =========================
+       LOVE SLIDER
+    ========================= */
+
+    const loveSlider = document.getElementById("loveSlider");
+const loveValue = document.getElementById("loveValue");
+const loveMessage = document.getElementById("loveMessage");
+
+function updateLoveSlider() {
+  const value = Number(loveSlider.value);
+
+  loveValue.textContent = value;
+
+  if (value <= 20) {
+    loveMessage.textContent = "hmm... is this even love?";
+  } else if (value <= 40) {
+    loveMessage.textContent = "okay, maybe a little...";
+  } else if (value <= 60) {
+    loveMessage.textContent = "wait, i'm starting to like you";
+  } else if (value <= 80) {
+    loveMessage.textContent = "okay, i really really like you";
+  } else if (value < 100) {
+    loveMessage.textContent = "you're becoming my favorite person";
+  } else {
+    loveMessage.textContent = "100% sure, it's always you ♡";
+  }
+}
+
+loveSlider.addEventListener("input", updateLoveSlider);
+
+updateLoveSlider();
+
+    /* =========================
+       MUSIC
+    ========================= */
+
+
+    /* =========================
+       LOVE LETTER
+    ========================= */
+
+    function openLetter() {
+
+      document
+        .getElementById("letter")
+        .classList.toggle("open");
+
+    }
+
+
+    /* =========================
+       FLOATING HEARTS
+    ========================= */
+
+    function createHeart() {
+
+      const heart = document.createElement("div");
+
+      heart.className = "heart";
+
+      heart.textContent = Math.random() > .5 ? "♡" : "♥";
+
+      heart.style.left = Math.random() * 100 + "vw";
+
+      heart.style.fontSize =
+        (10 + Math.random() * 13) + "px";
+
+      heart.style.animationDuration =
+        (7 + Math.random() * 5) + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 13000);
+
+    }
+
+    function createHearts() {
+
+      setInterval(() => {
+
+        createHeart();
+
+      }, 1200);
+
+    }
+
+  </script>
+
+</body>
+</html>
